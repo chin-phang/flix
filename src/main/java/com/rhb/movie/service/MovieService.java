@@ -2,6 +2,7 @@ package com.rhb.movie.service;
 
 import java.util.List;
 
+import com.rhb.movie.dto.CreateUpdateMovieRequest;
 import com.rhb.movie.dto.MovieDto;
 
 public interface MovieService {
@@ -10,9 +11,9 @@ public interface MovieService {
 	
 	MovieDto getMovieById(Long id);
 	
-	MovieDto createMovie(MovieDto movieDto);
+	MovieDto createMovie(CreateUpdateMovieRequest createMovie);
 	
-	MovieDto updateMovie(Long id, MovieDto movieDto);
+	MovieDto updateMovie(Long id, CreateUpdateMovieRequest updateMovie);
 	
 	void deleteMovie(Long id);
 }

@@ -1,17 +1,22 @@
 package com.rhb.movie.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "movie")
-public class Movie implements Serializable {
+public class Movie extends AbstractAuditing implements Serializable {
 
 	private static final long serialVersionUID = -4874156798140484399L;
 
@@ -19,13 +24,18 @@ public class Movie implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "title", length = 100, nullable = false)
+	@Column(name = "title", length = 200)
 	private String title;
 	
-	@Column(name= "category", length = 50, nullable = false)
-	private String category;
+	@ManyToMany
+	@JoinTable(
+			name = "movie_category",
+			joinColumns = { @JoinColumn(name = "movie_id", referencedColumnName = "id") },
+			inverseJoinColumns = { @JoinColumn(name = "category_name", referencedColumnName = "name") }
+	)
+	private Set<Category> categories = new HashSet<>();
 	
-	@Column(name = "rating", nullable = false)
+	@Column(name = "rating")
 	private Double rating;
 
 	public Long getId() {
@@ -44,12 +54,12 @@ public class Movie implements Serializable {
 		this.title = title;
 	}
 
-	public String getCategory() {
-		return category;
+	public Set<Category> getCategories() {
+		return categories;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
 	}
 
 	public Double getRating() {
@@ -64,7 +74,7 @@ public class Movie implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((categories == null) ? 0 : categories.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((rating == null) ? 0 : rating.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
@@ -80,10 +90,10 @@ public class Movie implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Movie other = (Movie) obj;
-		if (category == null) {
-			if (other.category != null)
+		if (categories == null) {
+			if (other.categories != null)
 				return false;
-		} else if (!category.equals(other.category))
+		} else if (!categories.equals(other.categories))
 			return false;
 		if (id == null) {
 			if (other.id != null)

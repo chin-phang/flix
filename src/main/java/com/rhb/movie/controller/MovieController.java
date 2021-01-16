@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rhb.movie.constant.Constant;
+import com.rhb.movie.dto.CreateUpdateMovieRequest;
 import com.rhb.movie.dto.MovieDto;
 import com.rhb.movie.service.MovieService;
 
@@ -44,19 +45,21 @@ public class MovieController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> createMovie(@RequestBody MovieDto movieDto) {
+	public ResponseEntity<?> createMovie(@RequestBody CreateUpdateMovieRequest createMovie) {
 		try {
-			movieService.createMovie(movieDto);
+			movieService.createMovie(createMovie);
 			return ResponseEntity.ok(Constant.MOVIE_CREATE_SUCCESS);
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(e.getLocalizedMessage());
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getLocalizedMessage());
 		}
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateMovie(@PathVariable Long id, @RequestBody MovieDto movieDto) {
+	public ResponseEntity<?> updateMovie(@PathVariable Long id, @RequestBody CreateUpdateMovieRequest updateMovie) {
 		try {
-			movieService.updateMovie(id, movieDto);
+			movieService.updateMovie(id, updateMovie);
 			return ResponseEntity.ok(Constant.MOVIE_UPDATE_SUCCESS);
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(e.getLocalizedMessage());

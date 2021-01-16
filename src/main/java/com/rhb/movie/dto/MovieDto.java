@@ -1,7 +1,10 @@
 package com.rhb.movie.dto;
 
 import java.io.Serializable;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.rhb.movie.entity.Category;
 import com.rhb.movie.entity.Movie;
 
 public class MovieDto implements Serializable {
@@ -9,11 +12,8 @@ public class MovieDto implements Serializable {
 	private static final long serialVersionUID = -6907574568628551785L;
 	
 	private Long id;
-	
 	private String title;
-	
-	private String category;
-	
+	private Set<String> categories;
 	private Double rating;
 	
 	public MovieDto() {
@@ -23,7 +23,7 @@ public class MovieDto implements Serializable {
 	public MovieDto(Movie movie) {
 		this.id = movie.getId();
 		this.title = movie.getTitle();
-		this.category = movie.getCategory();
+		this.categories = movie.getCategories().stream().map(Category::getName).collect(Collectors.toSet());
 		this.rating = movie.getRating();
 	}
 
@@ -43,12 +43,12 @@ public class MovieDto implements Serializable {
 		this.title = title;
 	}
 
-	public String getCategory() {
-		return category;
+	public Set<String> getCategories() {
+		return categories;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setCategories(Set<String> categories) {
+		this.categories = categories;
 	}
 
 	public Double getRating() {
@@ -61,6 +61,6 @@ public class MovieDto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MovieDto [id=" + id + ", title=" + title + ", category=" + category + ", rating=" + rating + "]";
+		return "MovieDto [id=" + id + ", title=" + title + ", categories=" + categories + ", rating=" + rating + "]";
 	}
 }

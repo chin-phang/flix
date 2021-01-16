@@ -13,21 +13,51 @@
     		<column name="id" type="bigint" autoIncrement="${autoIncrement}" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="title" type="varchar(100)">
+            <column name="title" type="varchar(200)"/>
+            <column name="rating" type="double(2,1)"/>
+            <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="category" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="rating" type="double(2,1)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
     	</createTable>
+    	
+    	<addDefaultValue columnName="rating" tableName="movie" defaultValue="0"/>
     	
     	<loadData
                   file="db/data/movie.csv"
                   separator=";"
                   tableName="movie">
+        </loadData>
+        
+        <createTable tableName="category">
+            <column name="name" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+    	</createTable>
+    	
+    	<loadData
+                  file="db/data/category.csv"
+                  separator=";"
+                  tableName="category">
+        </loadData>
+        
+        <createTable tableName="movie_category">
+    		<column name="movie_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+    	</createTable>
+    	
+    	<addPrimaryKey columnNames="movie_id, category_name" tableName="movie_category"/>
+    	
+    	<loadData
+                  file="db/data/movie_category.csv"
+                  separator=";"
+                  tableName="movie_category">
         </loadData>
     </changeSet>
 </databaseChangeLog>
