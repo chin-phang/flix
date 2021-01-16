@@ -1,6 +1,6 @@
 package com.rhb.movie.constant;
 
-public class Constant {
+public class ExceptionMessage {
 
 	public static final String MOVIE_CREATE_SUCCESS = "movie.success.create";
 	public static final String MOVIE_UPDATE_SUCCESS = "movie.success.update";

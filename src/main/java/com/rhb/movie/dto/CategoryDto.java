@@ -10,20 +10,20 @@ public class CategoryDto implements Serializable {
 
 	private String name;
 	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 	public CategoryDto() {
 		// Empty constructor
 	}
 
 	public CategoryDto(Category category) {
 		this.name = category.getName();
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override

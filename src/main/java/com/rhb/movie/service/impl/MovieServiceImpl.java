@@ -11,7 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.rhb.movie.constant.Constant;
+import com.rhb.movie.constant.ExceptionMessage;
 import com.rhb.movie.dto.CreateUpdateMovieRequest;
 import com.rhb.movie.dto.MovieDto;
 import com.rhb.movie.entity.Category;
@@ -49,7 +49,7 @@ public class MovieServiceImpl implements MovieService {
 	@Transactional(readOnly = true)
 	public MovieDto getMovieById(Long id) {
 		Movie entity = movieRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException(Constant.MOVIE_NOT_FOUND));
+				.orElseThrow(() -> new EntityNotFoundException(ExceptionMessage.MOVIE_NOT_FOUND));
 		
 		return MovieMapper.toDto(entity);
 	}
@@ -57,15 +57,15 @@ public class MovieServiceImpl implements MovieService {
 	@Override
 	public MovieDto createMovie(CreateUpdateMovieRequest createMovie) {
 		if (createMovie.getRating() == null) {
-			throw new IllegalArgumentException(Constant.RATING_NULL_ERROR);
+			throw new IllegalArgumentException(ExceptionMessage.RATING_NULL_ERROR);
 		}
 		
 		if (createMovie.getTitle() == null || createMovie.getTitle().isEmpty()) {
-			throw new IllegalArgumentException(Constant.TITLE_NULL_ERROR);
+			throw new IllegalArgumentException(ExceptionMessage.TITLE_NULL_ERROR);
 		}
 		
 		if (createMovie.getCategories() == null || createMovie.getCategories().isEmpty()) {
-			throw new IllegalArgumentException(Constant.CATEGORY_NULL_ERROR);
+			throw new IllegalArgumentException(ExceptionMessage.CATEGORY_NULL_ERROR);
 		}
 		
 		// Check if rating within range and categories exist
@@ -90,7 +90,7 @@ public class MovieServiceImpl implements MovieService {
 	@Override
 	public MovieDto updateMovie(Long id, CreateUpdateMovieRequest updateMovie) {
 		Movie entity = movieRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException(Constant.MOVIE_NOT_FOUND));
+				.orElseThrow(() -> new EntityNotFoundException(ExceptionMessage.MOVIE_NOT_FOUND));
 		
 		// When update, rating can be null
 		if (updateMovie.getRating() != null) {
@@ -105,7 +105,7 @@ public class MovieServiceImpl implements MovieService {
 		if (updateMovie.getCategories() != null) {
 			// Categories cannot be empty
 			if (updateMovie.getCategories().isEmpty()) {
-				throw new EntityNotFoundException(Constant.CATEGORY_NULL_ERROR);
+				throw new EntityNotFoundException(ExceptionMessage.CATEGORY_NULL_ERROR);
 			}
 			validateCategory(updateMovie.getCategories());
 			// Clear existing ones then update categories which are present in the table
@@ -127,16 +127,16 @@ public class MovieServiceImpl implements MovieService {
 	@Override
 	public void deleteMovie(Long id) {
 		Movie entity = movieRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException(Constant.MOVIE_NOT_FOUND));
+				.orElseThrow(() -> new EntityNotFoundException(ExceptionMessage.MOVIE_NOT_FOUND));
 		
 		movieRepository.delete(entity);
 	}
 	
 	private void validateRating(Double rating) {
 		if (rating < 0.5) {
-			throw new IllegalArgumentException(Constant.RATING_MIN_ERROR);
+			throw new IllegalArgumentException(ExceptionMessage.RATING_MIN_ERROR);
 		} else if (rating > 5) {
-			throw new IllegalArgumentException(Constant.RATING_MAX_ERROR);
+			throw new IllegalArgumentException(ExceptionMessage.RATING_MAX_ERROR);
 		}
 	}
 	
@@ -144,7 +144,7 @@ public class MovieServiceImpl implements MovieService {
 		categories.stream()
 			.forEach(string -> {
 				categoryRepository.findById(string)
-					.orElseThrow(() -> new EntityNotFoundException(Constant.CATEGORY_NOT_EXIST));
+					.orElseThrow(() -> new EntityNotFoundException(ExceptionMessage.CATEGORY_NOT_EXIST));
 			});
 	}
 }
