@@ -72,44 +72,17 @@ public class Movie extends AbstractAuditing implements Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((categories == null) ? 0 : categories.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((rating == null) ? 0 : rating.hashCode());
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		return result;
+		return 31;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Movie other = (Movie) obj;
-		if (categories == null) {
-			if (other.categories != null)
-				return false;
-		} else if (!categories.equals(other.categories))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (rating == null) {
-			if (other.rating != null)
-				return false;
-		} else if (!rating.equals(other.rating))
-			return false;
-		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
-		return true;
-	}
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Movie)) {
+            return false;
+        }
+        return id != null && id.equals(((Movie) o).id);
+    }
 }
